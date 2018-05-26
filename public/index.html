@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="javascript,minify,uglifyjs,closure,compiler" lang="en">
+    <meta name="description" content="Javascript minification web tool. API is also available.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Minify.work">
+    <meta property="og:title" content="Minify.work - Javascript Minification Tool">
+    <meta property="og:description" content="Javascript minification web tool. API is also available.">
+    <!--<meta property="og:image" content="absolute url to png">-->
+    <meta property="og:url" content="http://minify.work/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Minify.work - Javascript Minification Tool">
+    <meta name="twitter:description" content="Javascript minification web tool. API is also available." />
+    <!--<meta name="twitter:image" content="absolute url to png">-->
+    <!--<meta name="twitter:site" content="@screen_name">-->
+    <!--<meta name="twitter:creator" content="@screen_name" />-->
+    <title>Minify.work - Javascript Minification Tool</title>
+    <!--<link rel="alternate" href="absolute url to japanese page" hreflang="ja" />-->
+    <link rel="alternate" href="http://minify.work/" hreflang="en" />
+    <link type="image/vnd.microsoft.icon" rel="shortcut icon" href="/images/favicon-256.png" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script>
+      window.Minify = {
+        ready: function (callback) {
+          window.addEventListener('DOMContentLoaded', function () {
+            $(document).ready(callback);
+          });
+        }
+      }
+      Minify.ready(function () {
+        $('#minify-form').on('submit', function (event) {
+          event.preventDefault();
+
+          var send = function (input) {
+            $.ajax({
+              url: '/api/minify',
+              type: 'POST',
+              dataType: 'text',
+              data: {
+                compressor: $('#compressor').val(),
+                input: input,
+              }
+            })
+              .done(function (data) {
+                $('#output').val(data);
+              });
+          };
+
+          //if ($('#input-source').val() === 'text') {
+            send($('#input').val());
+          /*} else if ($('#input-source').val() === 'url') {
+            $.ajax({
+              url: $('#input-url').val(),
+              type: 'GET',
+              dataType: 'text',
+            })
+              .done(function (data) {
+                send(data);
+              });
+          }*/
+        });
+      });
+    </script>
+    <script defer src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js" integrity="sha256-YFhaeQSVBgAFNN5z4I9YRB2jCuqc2nvypz0Q2eQzcx8=" crossorigin="anonymous"></script>
+    <script defer src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script defer type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5add7e3108dfe33d"></script>
+</head>
+<body>
+
+<header class="mb-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Minify.work - Javascript Minification Tool</h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="container-fluid">
+        <div class="row mb-5">
+            <div class="col-sm-8 mx-auto">
+                <form id="minify-form">
+                    <div class="form-group">
+                        <label for="compressor">Compressor</label>
+                        <select class="form-control" id="compressor">
+                            <option value="uglifyjs">UglifyJS</option>
+                            <option value="closure_compiler">Closure Compiler</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="input">Input Javascript</label>
+                        <textarea class="form-control" id="input" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Minify Now</button>
+                </form>
+                <div class="form-group">
+                    <label for="output">Output Javascript</label>
+                    <textarea class="form-control" id="output" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 mx-auto">
+                <h2>Donation</h2>
+                <p><a href="https://www.paypal.me/bakuage/4.99usd">Donate by PayPal.me</a></p>
+                <p>Minify.work is powered by <a href="https://bakuage.com/en/">Bakuage</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="mt-5">
+    <div class="container-fluid">
+        <p>&copy; Minify.work 2018. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>
